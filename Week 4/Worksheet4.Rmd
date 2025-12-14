@@ -1,0 +1,48 @@
+---
+title: "In Class Worksheet"
+author: "Peyton Hall"
+date: "09/19/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In Class Coding
+```{r In Class Coding}
+library(ggplot2)
+# install.packages("datarium")
+library(datarium)
+library(MASS)
+library(splines)
+
+# View(marketing)
+ggplot(data = marketing, aes(x = youtube, y = sales)) + geom_point()
+# simple linear regression
+model1 <- lm(sales ~ youtube, data = marketing)
+summary(model1)
+
+# multiple linear regression
+model2 <- lm(sales ~ youtube + facebook + newspaper, data = marketing)
+summary(model2)
+
+library(readxl)
+admission <- read_excel("~/Desktop/DATA 499/Week 4/admission.xlsx")
+model3 <- glm(Decision ~ GPA + GMAT, data = admission, family = binomial(link = "logit"))
+summary(model3)
+# make a prediction
+newindividual <- data.frame(GPA = 3.6, GMAT = 550)
+predict(model3, newdata = newindividual, type = "response")
+```
+
+Worksheet 4 Coding
+```{r Worksheet 4 Coding}
+model14 <- lm(GNP ~ Armed.Forces + Employed, data = longley)
+summary(model14)
+
+# the model is y = -1432 - 0.006 x1 + 27.89 x2, x1 is armed forces and x2 is employed
+# Employed is significantly related to the GNP
+# the model fits the data very well. Adjusted R square = 0.96
+```
+
