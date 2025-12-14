@@ -1,0 +1,137 @@
+---
+title: "DATA 499 Week 2 Activity"
+author: "Peyton Hall"
+date: "09/05/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In Class Coding
+```{r In Class Coding}
+Name <- c("John","Kate","Tom")
+Title <- c("Manager","Student","Professor")
+Salary <- c(70000,30000,60000)
+mydf <- data.frame(Name, Title, Salary)
+mydf
+mean(mydf$Salary)
+library(tidyverse)
+InsectSprays %>%
+filter(spray %in% c("A","B","C"))
+InsectSprays %>%
+group_by(spray) %>%
+summarize(avecount = mean(count), sdcount = sd(count)) %>%
+arrange(desc(avecount))
+```
+
+In Class Coding Part Two
+```{r In Class Coding Part Two}
+# scrape the climate table from the Hawai‘i Volcanoes National Park page
+
+library(rvest)
+library(magrittr)
+
+mypark <- read_html("https://en.wikipedia.org/wiki/Hawai%CA%BBi_Volcanoes_National_Park")
+
+mypark %>%
+  html_nodes("table") %>%
+  html_table(fill = TRUE) %>%
+  .[[2]]
+
+```
+
+
+```{r}
+library(readxl)
+Hospital_data <- read_excel("~/Desktop/DATA 499/Week 2/Hospital data.xlsx")
+COVID_19_Cases_2020_8_17 <- read_excel("~/Desktop/DATA 499/Week 2/COVID-19-Cases-2020.8.17.xlsx")
+```
+
+Worksheet
+```{r Worksheet}
+# packages
+library(tidyverse)
+library(readxl)
+library(rvest)
+
+# 1) Data frame + mean salary
+mydf <- tibble(
+  Name   = c("John","Kate","Tom"),
+  Title  = c("Manager","Student","Professor"),
+  Salary = c(70000, 30000, 60000)
+)
+mydf
+mean(mydf$Salary)
+
+# 2) COVID-19-2020.8.17 (counts by age group)
+covid <- read_excel("~/Desktop/DATA 499/Week 2/COVID-19-Cases-2020.8.17.xlsx")
+
+# Males (lab-confirmed only)
+male_counts <- covid %>%
+  filter(sex == "Male", current_status == "Laboratory-confirmed case") %>%
+  count(age_group, name = "total_cases") %>%
+  arrange(age_group)
+male_counts
+
+# Females (lab-confirmed only)
+female_counts <- covid %>%
+  filter(sex == "Female", current_status == "Laboratory-confirmed case") %>%
+  count(age_group, name = "total_cases") %>%
+  arrange(age_group)
+female_counts
+
+# Optional quick bars
+ggplot(male_counts, aes(age_group, total_cases)) +
+  geom_col() +
+  labs(title = "Male lab-confirmed cases by age group", x = "Age group", y = "Cases") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(female_counts, aes(age_group, total_cases)) +
+  geom_col() +
+  labs(title = "Female lab-confirmed cases by age group", x = "Age group", y = "Cases") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# 3) Scrape Wikipedia Table 13 (Figure Skating medalists)
+figure_skating_tbl <- html_table(
+  read_html("https://en.wikipedia.org/wiki/List_of_2022_Winter_Olympics_medal_winners"),
+  fill = TRUE
+)[[13]]
+head(figure_skating_tbl, 10)
+
+# 4) Hospital data — graphs
+hospital <- read_excel("~/Desktop/DATA 499/Week 2/Hospital data.xlsx")
+
+# 4a) Average temperature by antibiotic group (bar; y starts at 0)
+temp_avg <- hospital %>%
+  group_by(Antibiotic) %>%
+  summarise(avg_temp = mean(Temp, na.rm = TRUE), .groups = "drop")
+temp_avg
+
+ggplot(temp_avg, aes(x = Antibiotic, y = avg_temp)) +
+  geom_col() +
+  expand_limits(y = 0) +
+  labs(title = "Average temperature by antibiotic status",
+       x = "Antibiotic provided", y = "Average temperature")
+
+# 4b) Average WBC by antibiotic group (points)
+wbc_avg <- hospital %>%
+  group_by(Antibiotic) %>%
+  summarise(avg_wbc = mean(WBC, na.rm = TRUE), .groups = "drop")
+wbc_avg
+
+ggplot(wbc_avg, aes(x = Antibiotic, y = avg_wbc)) +
+  geom_point(size = 3) +
+  labs(title = "Average WBC by antibiotic status",
+       x = "Antibiotic provided", y = "Average WBC")
+
+# 4c) Temp (x) vs WBC (y), red dots
+ggplot(hospital, aes(x = Temp, y = WBC)) +
+  geom_point(color = "red") +
+  labs(title = "Temperature vs WBC",
+       x = "Temperature at admission", y = "WBC")
+
+
+```
+
