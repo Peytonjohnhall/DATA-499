@@ -1,0 +1,189 @@
+---
+title: "Homework 5"
+author: "Peyton Hall"
+date: "Homework 5"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+$H_0: \mu_{\text{Johns Hopkins}} = \mu_{\text{Rancho Los Amigos}} = \mu_{\text{St. Louis}}$ 
+vs.
+$H_a: \text{At least one } \mu \text{ is different among the three medical centers}$
+Question 1
+```{r Question 1}
+johns_hopkins <- c(3.23, 3.47, 1.86, 2.47, 3.01,
+                   1.69, 2.10, 2.81, 3.28, 3.36)
+
+rancho_los_amigos <- c(3.22, 2.88, 1.71, 2.89, 3.77,
+                       3.29, 3.39, 3.86, 2.64, 2.64)
+
+st_louis <- c(2.79, 3.22, 2.25, 2.98, 2.47,
+              2.77, 2.95, 3.56, 2.88, 2.88)
+
+fev_data <- data.frame(
+  center = factor(rep(c("Johns Hopkins", "Rancho Los Amigos", "St. Louis"), each = 10)),
+  FEV = c(johns_hopkins, rancho_los_amigos, st_louis))
+
+# Fit one-way ANOVA
+fit <- aov(FEV~center, data = fev_data)
+summary(fit)
+
+# Extract test statistic and p-value
+anova_table <- summary(fit)[[1]]
+F_stat <- anova_table$`F value`[1]
+p_val <- anova_table$`Pr(>F)`[1]
+
+F_stat
+p_val
+```
+f = 0.709; p-value = 0.501
+Fail to reject H_0. p-value (0.501) is greater than the significance level (0.05). 
+There is not sufficient evidence to conclude that the mean FEV levels are 
+significantly different among the three medical centers.
+
+$H_{0,1}: \mu_{\text{Low}} = \mu_{\text{Medium}} = \mu_{\text{High}}$ vs.
+$H_{a,1}: \text{At least one mean is different}$  
+$H_{0,2}: \mu_{\text{Short}} = \mu_{\text{Long}}$ vs.
+$H_{a,2}: \mu_{\text{Short}} \neq \mu_{\text{Long}}$  
+$H_{0,3}: \text{No interaction effect between temperature and presoaking}$ vs.
+$H_{a,3}: \text{There is an interaction effect between temperature and presoaking}$
+Question 2
+```{r Question 2}
+short_low <- c(8, 5, 9)
+short_medium <- c(18, 15, 17)
+short_high <- c(12, 11, 14)
+long_low <- c(11, 13, 15)
+long_medium <- c(20, 19, 20)
+long_high <- c(15, 16, 12)
+
+taste_data <- data.frame(
+  presoaking = factor(rep(c("Short", "Long"), each = 9)),
+  temperature = factor(rep(c("Low", "Medium", "High"), each = 3, times = 2)),
+  score = c(short_low, short_medium, short_high,
+            long_low, long_medium, long_high))
+taste_data
+
+fit2 <- aov(score~temperature*presoaking, data = taste_data) # Two-way ANOVA
+summary(fit2)
+
+anova_table <- summary(fit2)[[1]] # extract test statistics and p-values
+
+# test statistic and p-value for temperature effect
+F_temp <- anova_table$`F value`[1]
+p_temp <- anova_table$`Pr(>F)`[1]
+
+# test statistic and p-value for presoaking effect
+F_presoak <- anova_table$`F value`[2]
+p_presoak <- anova_table$`Pr(>F)`[2]
+
+# test statistic and p-value for interaction
+F_interaction <- anova_table$`F value`[3]
+p_interaction <- anova_table$`Pr(>F)`[3]
+
+F_temp; p_temp
+F_presoak; p_presoak
+F_interaction; p_interaction
+
+interaction.plot(taste_data$temperature, taste_data$presoaking,
+                 taste_data$score,
+                 xlab = "Temperature Level",
+                 ylab = "Average Taste Score",
+                 trace.label = "Presoaking Time",
+                 col = c("red","blue"),
+                 lwd = 2)
+
+```
+temperature:  
+F = 33.08; p-value = 1.31e-05  
+Reject H0. There is a significant effect of temperature
+presoaking:  
+F = 19.32; p-value = 0.000872  
+Reject H0. There is a significant effect of presoaking
+interaction:  
+F = 1.83; p-value = 0.202  
+Fail to reject H0. No significant interaction effect between temperature and presoaking
+
+Question 3
+```{r Question 3}
+library(readxl)
+psychological_test_data <- read_excel("~/Desktop/DATA 499/Week 5/psychological test data.xlsx")
+psychological_test_data
+
+psych_pca <- prcomp(psychological_test_data, scale. = TRUE) # PCA
+plot(psych_pca, type = "l", main = "Scree Plot")
+eigenvalues <- psych_pca$sdev^2
+eigenvalues
+
+```
+a) Keep 2 PCAs
+a) PC1 explains about 60–65% of the variance, PC2 explains about 15–20%. 
+Together about 80–85%.
+c) Each PC is a linear combination of the six variables.
+d) From the biplot, the six variables can be grouped into Group 1: visperc, 
+cubes, lozenges (visual/spatial tests) and Group 2: paragrap, sentence, wordmean 
+(verbal/linguistic tests).
+
+Question 4
+```{r Question 4}
+library(readxl)
+ClusterFaculty <- read_excel("~/Desktop/DATA 499/Week 5/ClusterFaculty.xlsx")
+ClusterFaculty
+
+# remove the Name column for clustering (keep it separate for labeling later)
+faculty_names <- ClusterFaculty$Name
+cluster_vars <- ClusterFaculty[, -1]
+# scale the variables so they are on the same scale
+cluster_scaled <- scale(cluster_vars)
+# perform hierarchical clustering using Ward’s method
+d <- dist(cluster_scaled, method = "euclidean")
+hc <- hclust(d, method = "ward.D2")
+# dendrogram
+plot(hc, labels = faculty_names, main = "Faculty Clustering Dendrogram")
+clusters <- cutree(hc, k = 4) # cut into 4 clusters
+table(clusters) # find the smallest cluster
+smallest_cluster <- which.min(table(clusters))
+# faculty names in the smallest cluster
+faculty_names[clusters == smallest_cluster]
+```
+a) Rosalyn, Lawrence, Sunila, Randolph, Louis, Tony, Raul, Catalina, Johnson, 
+Martina.
+
+Question 5
+```{r Question 5}
+library(readxl)
+SpendingScore <- read_excel("~/Desktop/DATA 499/Week 5/SpendingScore.xlsx")
+SpendingScore
+
+# use only AnnualIncome and SpendingScore for clustering
+spend_data <- SpendingScore[, c("AnnualIncome", "SpendingScore")]
+
+spend_scaled <- scale(spend_data) # scale the data
+
+# decide number of clusters using the elbow method
+wss <- (nrow(spend_scaled)-1)*sum(apply(spend_scaled,2,var))
+for (i in 2:10) {
+  km <- kmeans(spend_scaled, centers=i)
+  wss[i] <- km$tot.withinss
+}
+plot(1:10, wss, type="b", xlab="Number of Clusters", ylab="Within groups sum of squares",
+     main="Elbow Method for K-means")
+
+# from the elbow plot, pick k
+set.seed(123)
+kmeans_result <- kmeans(spend_scaled, centers=4)   # adjust 4 if elbow suggests different
+# add cluster labels to data
+SpendingScore$Cluster <- as.factor(kmeans_result$cluster)
+
+library(ggplot2)
+ggplot(SpendingScore, aes(x=AnnualIncome, y=SpendingScore, color=Cluster)) +
+  geom_point(size=3) +
+  labs(title="K-means Clustering of Customers", x="Annual Income", y="Spending Score")
+```
+b) From the elbow plot, the sharp bend occurs at k = 4. Therefore, it was 
+decided to use 4 clusters because adding more clusters does not significantly 
+reduce the within-cluster variation.
