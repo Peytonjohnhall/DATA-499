@@ -1,0 +1,138 @@
+---
+title: "Worksheet 5"
+author: "Peyton Hall"
+date: "09/26/2025"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+$$H_0: \mu_{low} = \mu_{med} = \mu_{high} \quad \text{vs.} \quad H_a: \text{ at least two means differ}$$
+In Class Coding One-Way ANOVA
+```{r In Class Coding One-Way ANOVA}
+library(readxl)
+IQ_Data <- read_excel("~/Desktop/DATA 499/Week 5/IQ Data.xlsx")
+# IQ_Data
+model1 <- aov(iqf ~ lead_grp, data = IQ_Data)
+summary(model1)
+TukeyHSD(model1) # pairwise comparison
+```
+Fail to reject H_0. There is no evidence that the mean IQ scores are 
+significantly different between lead groups.
+
+$$H_0: \mu_{Males} = \mu_{Females} \quad \text{vs.} \quad H_a: \mu_{Males} \neq \mu_{Females}$$
+In Class Coding Two-Way ANOVA
+```{r In Class Coding Two-Way ANOVA}
+# see slide 9 of week 5 review ANOVA
+gender <- rep(c("Male", "Female"), each = 15)
+treatment <- rep(rep(c("A", "B", "C"), each = 5), times = 2)
+relieftime <- c(12, 15, 16, 17, 14, 14, 17, 19, 20, 17, 25, 27, 29, 24, 22,
+          21, 19, 18, 24, 25, 21, 20, 23, 27, 25, 37, 34, 36, 26, 29)
+myrelief <- data.frame(gender, treatment, relieftime)
+
+model2 <- aov(relieftime ~ gender + treatment + gender*treatment, data = myrelief)
+summary(model2)
+TukeyHSD(model2) # pairwise comparison
+interaction.plot(myrelief$treatment, myrelief$gender, myrelief$relieftime, fun = mean, type = "b")
+```
+f = 33.54; p-value = 0
+Reject H_0. There is significant mean heart rate difference between males and 
+females.
+The pairwise comparison test shows that treatment C leads to significantly 
+longer relief times than treatments A and B.
+The interaction plot shows that treatment C produces the highest relief times, 
+especially for females. The gap between males and females widens with treatment 
+C, showing a significant interaction.
+
+
+In Class Coding Component Analysis
+```{r In Class Coding Component Analysis}
+factory_and_substances <- read_excel("~/Desktop/DATA 499/Week 5/factory and substances.xlsx")
+model4 <- prcomp(factory_and_substances[,-1], scale. = TRUE)
+result4 <- summary(model4)
+result4
+model4$rotation
+plot(model4, type = "l")
+biplot(model4, scale = 0)
+```
+
+
+
+$$H_0: \mu_{Drug A} = \mu_{Drug B} = \mu_{Drug C} \quad \text{vs.} \quad H_a: \text{At least two drug means differ}$$
+$$H_0: \mu_{Male} = \mu_{Female} \quad \text{vs.} \quad H_a: \mu_{Male} \neq \mu_{Female}$$
+Question 1
+```{r Question 1}
+library(readxl)
+DrugGenderCreatine <- read_excel("~/Desktop/DATA 499/Week 5/DrugGenderCreatine.xlsx")
+# DrugGenderCreatine
+# step 2
+model1 <- aov(creatine ~ drug + gender + drug*gender, data = DrugGenderCreatine)
+# step 3
+summary(model1)
+```
+f = 24.993; p-value = 6.39e-06
+Reject H_0. There is a significant mean creatinine difference between at least 
+two drugs
+f = 20.969; p-value = 0.000233
+Reject H_0. There is a significant mean creatinine difference between males and 
+females.
+f = 0.561; p-value = 0.580033
+Fail to reject H_0. There is no interaction between gender and drug.
+
+
+Question 2
+```{r Question 2}
+library(readxl)
+Earthquake <- read_excel("~/Desktop/DATA 499/Week 5/Earthquake.xlsx")
+
+# select only the dependent variables (longitude, depth, magnitude)
+eq_data <- Earthquake[, c("longitude", "depth", "magnitude")]
+pca_result <- prcomp(eq_data, scale. = TRUE) # perform PCA
+summary(pca_result)
+# plot to visualize how many components to keep
+plot(pca_result, type = "l")
+# loadings (coefficients for linear combinations)
+pca_result$rotation
+# variance explained by first two PCs
+summary(pca_result)$importance[2, 1:2] # proportion of variance
+summary(pca_result)$importance[3, 1:2] # cumulative variance
+# equation of the first principal component
+pc1 <- pca_result$rotation[,1]
+pc1_equation <- paste("PC1 =",
+                      round(pc1["Longitude"], 3), "* Longitude +",
+                      round(pc1["Depth"], 3), "* Depth +",
+                      round(pc1["Magnitude"], 3), "* Magnitude")
+pc1_equation
+```
+
+
+Question 3
+```{r Question 3}
+library(readxl)
+CreditCard <- read_excel("~/Desktop/DATA 499/Week 5/CreditCard.xlsx")
+# scale the data
+c_data <- scale(CreditCard[, c("BALANCE", "PURCHASES", "PAYMENTS")])
+d <- dist(c_data, method = "euclidean") # distance matrix
+modelq3 <- hclust(d, method = "complete") # hierarchical clustering
+plot(modelq3, main = "Credit Card Dendrogram") # dendrogram
+```
+
+
+Question 4
+```{r Question 4}
+library(readxl)
+library(factoextra)
+CAHousing <- read_excel("~/Desktop/DATA 499/Week 5/CAHousing.xlsx")
+data2 <- scale(CAHousing[, c("total_rooms", "total_bedrooms", "median_value")])
+fviz_nbclust(data2, kmeans, method = "wss")
+model6 <- kmeans(data2, centers = 3, nstart = 40)
+fviz_cluster(model6, data = data2, geom = "text", ellipse.type = "convex")
+```
+
+
+
