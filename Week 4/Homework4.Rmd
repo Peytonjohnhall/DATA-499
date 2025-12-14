@@ -1,0 +1,149 @@
+---
+title: "Homework 4"
+author: "Peyton Hall"
+date: "09/26/2025"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1
+```{r Question 1}
+library(readxl)
+housing_data <- read_excel("~/Desktop/DATA 499/Week 4/housing_data.xlsx")
+model <- lm(Price ~ Size + Bedrooms + Age, data = housing_data)
+summary(model)
+```
+The predictors that are significantly related to Price are Size (p < 2e-16), 
+Bedrooms (p = 5.69e-14), and Age (p = 0.002097). Since all p-values are below 
+0.05, each factor is statistically significant.
+The model fits the data very well, with an R-squared value of 0.8387. This means 
+that about 84% of the variation in house prices is explained by the predictors 
+Size, Bedrooms, and Age.
+The slope for Age is −0.690858, meaning that, holding Size and Bedrooms 
+constant, each additional year of age is associated with a decrease of about 
+$691 in the house price.
+For a 10-year-old, 4-bedroom, 2,000-square-foot house, the predicted price is 
+about $279,604.
+
+Question 2
+```{r Question 2}
+library(readxl)
+tennis <- read_excel("~/Desktop/DATA 499/Week 4/TennisElbow.xlsx")
+m <- glm(episodes ~ Age + Weight, data = tennis, family = binomial)
+summary(m)
+coef(m)
+# b)
+sig_tbl <- summary(m)$coefficients[,4] # p-values
+sig_tbl
+# c)
+new_pt <- data.frame(Age = 52, Weight = 0) # Weight=0 => light
+p_52_light <- predict(m, newdata = new_pt, type = "response")
+p_52_light # probability of having 1+ episodes
+```
+The factor significantly related to tennis elbow is Age.
+For a 52-year-old using a light racquet, the probability of having tennis elbow 
+is about 0.855 (85.5%).
+
+Question 3
+```{r Question 3}
+library(readxl)
+med <- read_excel("~/Desktop/DATA 499/Week 4/medical_data.xlsx")
+# a) logistic regression model
+m2 <- glm(HasDisease ~ Age + BMI + BloodPressure, data = med, family = binomial)
+summary(m2)
+# b) check significance (p-values)
+summary(m2)$coefficients[,4]
+```
+HasDisease = –21.09214 – 0.0009134 * Age + 0.188657·BMI + 0.03214 * BloodPressure
+The factors significantly related to the disease are BMI and BloodPressure.
+
+Question 4
+```{r Question 4}
+library(readxl)
+AgeIncome <- read_excel("~/Desktop/DATA 499/Week 4/AgeIncome.xlsx")
+library(ggplot2)
+library(splines)
+
+ggplot(AgeIncome, aes(x = Age, y = Income)) +
+  geom_point() +
+  labs(title = "Scatterplot of Age vs. Income")
+
+# b) Cubic spline regression
+fit_spline <- lm(Income ~ bs(Age, knots = c(30, 50), degree = 3), data = AgeIncome)
+
+plot(AgeIncome$Age, AgeIncome$Income, pch = 19, col = "gray",
+     main = "Cubic Spline Regression: Age vs. Income",
+     xlab = "Age", ylab = "Income")
+lines(AgeIncome$Age, fitted(fit_spline), col = "blue", lwd = 2)
+
+# c) Compare spline vs. simple linear regression
+fit_linear <- lm(Income ~ Age, data = AgeIncome)
+
+summary(fit_linear)$r.squared
+summary(fit_spline)$r.squared
+
+```
+The scatterplot shows a curved relationship between age and income.
+The cubic spline regression with knots at 30 and 50 produces a fitted curve that 
+follows the data more closely than a straight line.
+The linear model has R^2 = 0.1330, while the spline model has R^2 = 0.2745. 
+The spline model fits better because it explains more variation in income.
+
+Question 5
+```{r Question 5}
+library(readxl)
+# install.packages("glmnet")
+library(glmnet)
+
+set.seed(499) # reproducible split
+
+dat <- read_excel("~/Desktop/DATA 499/Week 4/RidgeLasso.xlsx")
+y <- dat$Y
+x <- as.matrix(subset(dat, select = -Y))
+
+# train/test split (70/30)
+n <- nrow(dat)
+idx_train <- sample(seq_len(n), size = floor(0.7 * n))
+x_tr <- x[idx_train, ]; y_tr <- y[idx_train]
+x_te <- x[-idx_train, ]; y_te <- y[-idx_train]
+
+mse <- function(truth, pred) mean((truth - pred)^2) # helper: mean squared error
+
+# ridge with CV to select best lambda
+cv_ridge <- cv.glmnet(x_tr, y_tr, alpha = 0, family = "gaussian", nfolds = 10, standardize = TRUE)
+lam_ridge <- cv_ridge$lambda.min
+pred_ridge <- predict(cv_ridge, s = lam_ridge, newx = x_te)
+mse_ridge <- mse(y_te, pred_ridge)
+
+# lasso with CV to select best lambda
+cv_lasso <- cv.glmnet(x_tr, y_tr, alpha = 1, family = "gaussian", nfolds = 10, standardize = TRUE)
+lam_lasso <- cv_lasso$lambda.min
+pred_lasso <- predict(cv_lasso, s = lam_lasso, newx = x_te)
+mse_lasso <- mse(y_te, pred_lasso)
+
+# compare with ordinary linear regression
+lm_fit <- lm(Y ~ ., data = as.data.frame(cbind(Y = y_tr, x_tr)))
+pred_lm <- predict(lm_fit, newdata = as.data.frame(x_te))
+mse_lm <- mse(y_te, pred_lm)
+
+# report
+list(
+  ridge_lambda = lam_ridge,
+  lasso_lambda = lam_lasso,
+  MSE_linear = mse_lm,
+  MSE_ridge  = mse_ridge,
+  MSE_lasso  = mse_lasso
+)
+
+```
+Ridge regression with cross-validation selected lambda = 0.2026.
+Ridge regression with cross-validation selected lambda = 0.0370.
+Comparing the models, the linear regression had the lowest MSE (5.51), followed 
+by Lasso (5.68), and Ridge had the highest MSE (5.84). Therefore, the linear 
+regression model fit the data best in this case.
+

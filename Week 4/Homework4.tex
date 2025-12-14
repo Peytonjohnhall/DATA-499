@@ -1,0 +1,434 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Homework 4},
+  pdfauthor={Peyton Hall},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Homework 4}
+\author{Peyton Hall}
+\date{09/26/2025}
+
+\begin{document}
+\maketitle
+
+Question 1
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{housing\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/DATA 499/Week 4/housing\_data.xlsx"}\NormalTok{)}
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Price }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Size }\SpecialCharTok{+}\NormalTok{ Bedrooms }\SpecialCharTok{+}\NormalTok{ Age, }\AttributeTok{data =}\NormalTok{ housing\_data)}
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Price ~ Size + Bedrooms + Age, data = housing_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -40.902 -16.488   1.167  13.886  57.556 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 43.256980  10.817873   3.999 0.000125 ***
+## Size         0.090701   0.004458  20.347  < 2e-16 ***
+## Bedrooms    15.463108   1.757722   8.797 5.69e-14 ***
+## Age         -0.690858   0.218484  -3.162 0.002097 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 19.98 on 96 degrees of freedom
+## Multiple R-squared:  0.8387, Adjusted R-squared:  0.8337 
+## F-statistic: 166.4 on 3 and 96 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+The predictors that are significantly related to Price are Size (p
+\textless{} 2e-16), Bedrooms (p = 5.69e-14), and Age (p = 0.002097).
+Since all p-values are below 0.05, each factor is statistically
+significant. The model fits the data very well, with an R-squared value
+of 0.8387. This means that about 84\% of the variation in house prices
+is explained by the predictors Size, Bedrooms, and Age. The slope for
+Age is −0.690858, meaning that, holding Size and Bedrooms constant, each
+additional year of age is associated with a decrease of about \$691 in
+the house price. For a 10-year-old, 4-bedroom, 2,000-square-foot house,
+the predicted price is about \$279,604.
+
+Question 2
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{tennis }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/DATA 499/Week 4/TennisElbow.xlsx"}\NormalTok{)}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(episodes }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ Weight, }\AttributeTok{data =}\NormalTok{ tennis, }\AttributeTok{family =}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = episodes ~ Age + Weight, family = binomial, data = tennis)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)   
+## (Intercept) -6.80838    2.39511  -2.843  0.00447 **
+## Age          0.16508    0.05232   3.155  0.00160 **
+## Weight       0.44929    0.76462   0.588  0.55681   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 76.028  on 56  degrees of freedom
+## Residual deviance: 62.020  on 54  degrees of freedom
+## AIC: 68.02
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{coef}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## (Intercept)         Age      Weight 
+##  -6.8083824   0.1650818   0.4492875
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# b)}
+\NormalTok{sig\_tbl }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(m)}\SpecialCharTok{$}\NormalTok{coefficients[,}\DecValTok{4}\NormalTok{] }\CommentTok{\# p{-}values}
+\NormalTok{sig\_tbl}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## (Intercept)         Age      Weight 
+## 0.004474510 0.001602709 0.556806048
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# c)}
+\NormalTok{new\_pt }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Age =} \DecValTok{52}\NormalTok{, }\AttributeTok{Weight =} \DecValTok{0}\NormalTok{) }\CommentTok{\# Weight=0 =\textgreater{} light}
+\NormalTok{p\_52\_light }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(m, }\AttributeTok{newdata =}\NormalTok{ new\_pt, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{p\_52\_light }\CommentTok{\# probability of having 1+ episodes}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1 
+## 0.8551863
+\end{verbatim}
+
+The factor significantly related to tennis elbow is Age. For a
+52-year-old using a light racquet, the probability of having tennis
+elbow is about 0.855 (85.5\%).
+
+Question 3
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{med }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/DATA 499/Week 4/medical\_data.xlsx"}\NormalTok{)}
+\CommentTok{\# a) logistic regression model}
+\NormalTok{m2 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(HasDisease }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age }\SpecialCharTok{+}\NormalTok{ BMI }\SpecialCharTok{+}\NormalTok{ BloodPressure, }\AttributeTok{data =}\NormalTok{ med, }\AttributeTok{family =}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(m2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = HasDisease ~ Age + BMI + BloodPressure, family = binomial, 
+##     data = med)
+## 
+## Coefficients:
+##                 Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)   -1.924e+01  2.561e+00  -7.514 5.75e-14 ***
+## Age           -9.134e-04  1.219e-02  -0.075   0.9403    
+## BMI            7.056e-01  7.793e-02   9.055  < 2e-16 ***
+## BloodPressure  3.214e-02  1.303e-02   2.467   0.0136 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 436.34  on 499  degrees of freedom
+## Residual deviance: 216.66  on 496  degrees of freedom
+## AIC: 224.66
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# b) check significance (p{-}values)}
+\FunctionTok{summary}\NormalTok{(m2)}\SpecialCharTok{$}\NormalTok{coefficients[,}\DecValTok{4}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   (Intercept)           Age           BMI BloodPressure 
+##  5.747824e-14  9.402622e-01  1.362863e-19  1.362821e-02
+\end{verbatim}
+
+HasDisease = --21.09214 -- 0.0009134 * Age + 0.188657·BMI + 0.03214 *
+BloodPressure The factors significantly related to the disease are BMI
+and BloodPressure.
+
+Question 4
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{AgeIncome }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/DATA 499/Week 4/AgeIncome.xlsx"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(splines)}
+
+\FunctionTok{ggplot}\NormalTok{(AgeIncome, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Age, }\AttributeTok{y =}\NormalTok{ Income)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Scatterplot of Age vs. Income"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Homework4_files/figure-latex/Question 4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# b) Cubic spline regression}
+\NormalTok{fit\_spline }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Income }\SpecialCharTok{\textasciitilde{}} \FunctionTok{bs}\NormalTok{(Age, }\AttributeTok{knots =} \FunctionTok{c}\NormalTok{(}\DecValTok{30}\NormalTok{, }\DecValTok{50}\NormalTok{), }\AttributeTok{degree =} \DecValTok{3}\NormalTok{), }\AttributeTok{data =}\NormalTok{ AgeIncome)}
+
+\FunctionTok{plot}\NormalTok{(AgeIncome}\SpecialCharTok{$}\NormalTok{Age, AgeIncome}\SpecialCharTok{$}\NormalTok{Income, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{col =} \StringTok{"gray"}\NormalTok{,}
+     \AttributeTok{main =} \StringTok{"Cubic Spline Regression: Age vs. Income"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"Age"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Income"}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(AgeIncome}\SpecialCharTok{$}\NormalTok{Age, }\FunctionTok{fitted}\NormalTok{(fit\_spline), }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Homework4_files/figure-latex/Question 4-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# c) Compare spline vs. simple linear regression}
+\NormalTok{fit\_linear }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Income }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age, }\AttributeTok{data =}\NormalTok{ AgeIncome)}
+
+\FunctionTok{summary}\NormalTok{(fit\_linear)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1330722
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit\_spline)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2746461
+\end{verbatim}
+
+The scatterplot shows a curved relationship between age and income. The
+cubic spline regression with knots at 30 and 50 produces a fitted curve
+that follows the data more closely than a straight line. The linear
+model has R\^{}2 = 0.1330, while the spline model has R\^{}2 = 0.2745.
+The spline model fits better because it explains more variation in
+income.
+
+Question 5
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\CommentTok{\# install.packages("glmnet")}
+\FunctionTok{library}\NormalTok{(glmnet)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## Loaded glmnet 4.1-10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{499}\NormalTok{) }\CommentTok{\# reproducible split}
+
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/DATA 499/Week 4/RidgeLasso.xlsx"}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{Y}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{subset}\NormalTok{(dat, }\AttributeTok{select =} \SpecialCharTok{{-}}\NormalTok{Y))}
+
+\CommentTok{\# train/test split (70/30)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(dat)}
+\NormalTok{idx\_train }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{seq\_len}\NormalTok{(n), }\AttributeTok{size =} \FunctionTok{floor}\NormalTok{(}\FloatTok{0.7} \SpecialCharTok{*}\NormalTok{ n))}
+\NormalTok{x\_tr }\OtherTok{\textless{}{-}}\NormalTok{ x[idx\_train, ]; y\_tr }\OtherTok{\textless{}{-}}\NormalTok{ y[idx\_train]}
+\NormalTok{x\_te }\OtherTok{\textless{}{-}}\NormalTok{ x[}\SpecialCharTok{{-}}\NormalTok{idx\_train, ]; y\_te }\OtherTok{\textless{}{-}}\NormalTok{ y[}\SpecialCharTok{{-}}\NormalTok{idx\_train]}
+
+\NormalTok{mse }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(truth, pred) }\FunctionTok{mean}\NormalTok{((truth }\SpecialCharTok{{-}}\NormalTok{ pred)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{) }\CommentTok{\# helper: mean squared error}
+
+\CommentTok{\# ridge with CV to select best lambda}
+\NormalTok{cv\_ridge }\OtherTok{\textless{}{-}} \FunctionTok{cv.glmnet}\NormalTok{(x\_tr, y\_tr, }\AttributeTok{alpha =} \DecValTok{0}\NormalTok{, }\AttributeTok{family =} \StringTok{"gaussian"}\NormalTok{, }\AttributeTok{nfolds =} \DecValTok{10}\NormalTok{, }\AttributeTok{standardize =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{lam\_ridge }\OtherTok{\textless{}{-}}\NormalTok{ cv\_ridge}\SpecialCharTok{$}\NormalTok{lambda.min}
+\NormalTok{pred\_ridge }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(cv\_ridge, }\AttributeTok{s =}\NormalTok{ lam\_ridge, }\AttributeTok{newx =}\NormalTok{ x\_te)}
+\NormalTok{mse\_ridge }\OtherTok{\textless{}{-}} \FunctionTok{mse}\NormalTok{(y\_te, pred\_ridge)}
+
+\CommentTok{\# lasso with CV to select best lambda}
+\NormalTok{cv\_lasso }\OtherTok{\textless{}{-}} \FunctionTok{cv.glmnet}\NormalTok{(x\_tr, y\_tr, }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{, }\AttributeTok{family =} \StringTok{"gaussian"}\NormalTok{, }\AttributeTok{nfolds =} \DecValTok{10}\NormalTok{, }\AttributeTok{standardize =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{lam\_lasso }\OtherTok{\textless{}{-}}\NormalTok{ cv\_lasso}\SpecialCharTok{$}\NormalTok{lambda.min}
+\NormalTok{pred\_lasso }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(cv\_lasso, }\AttributeTok{s =}\NormalTok{ lam\_lasso, }\AttributeTok{newx =}\NormalTok{ x\_te)}
+\NormalTok{mse\_lasso }\OtherTok{\textless{}{-}} \FunctionTok{mse}\NormalTok{(y\_te, pred\_lasso)}
+
+\CommentTok{\# compare with ordinary linear regression}
+\NormalTok{lm\_fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(}\AttributeTok{Y =}\NormalTok{ y\_tr, x\_tr)))}
+\NormalTok{pred\_lm }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(lm\_fit, }\AttributeTok{newdata =} \FunctionTok{as.data.frame}\NormalTok{(x\_te))}
+\NormalTok{mse\_lm }\OtherTok{\textless{}{-}} \FunctionTok{mse}\NormalTok{(y\_te, pred\_lm)}
+
+\CommentTok{\# report}
+\FunctionTok{list}\NormalTok{(}
+  \AttributeTok{ridge\_lambda =}\NormalTok{ lam\_ridge,}
+  \AttributeTok{lasso\_lambda =}\NormalTok{ lam\_lasso,}
+  \AttributeTok{MSE\_linear =}\NormalTok{ mse\_lm,}
+  \AttributeTok{MSE\_ridge  =}\NormalTok{ mse\_ridge,}
+  \AttributeTok{MSE\_lasso  =}\NormalTok{ mse\_lasso}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $ridge_lambda
+## [1] 0.2026167
+## 
+## $lasso_lambda
+## [1] 0.03709381
+## 
+## $MSE_linear
+## [1] 5.514533
+## 
+## $MSE_ridge
+## [1] 5.844474
+## 
+## $MSE_lasso
+## [1] 5.684386
+\end{verbatim}
+
+Ridge regression with cross-validation selected lambda = 0.2026. Ridge
+regression with cross-validation selected lambda = 0.0370. Comparing the
+models, the linear regression had the lowest MSE (5.51), followed by
+Lasso (5.68), and Ridge had the highest MSE (5.84). Therefore, the
+linear regression model fit the data best in this case.
+
+\end{document}
